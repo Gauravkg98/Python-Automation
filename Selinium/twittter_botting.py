@@ -1,0 +1,64 @@
+from selenium import webdriver
+import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+promised_down = 150
+promised_up= 10
+
+#edge_driver_path = 'F:\Swimdat\Python_codes\Selinium'
+TWITTER__MAIL = "gk09uasdfj@gmailcom"
+TWITTER_PASSWORD = "721394jck"
+
+class InternetSpeedTwitterBot():
+  def __init__(self):
+    self.driver = webdriver.Edge()
+    self.up=0
+    self.down=0
+
+  def get_intenet_speed(self):
+    self.driver.get("https://www.speedtest.net/")
+
+    time.sleep(3)
+
+    go_button = self.driver.find_element(By.CSS_SELECTOR, value=".start-button a")
+    go_button.click()
+    
+    time.sleep(60)
+
+    self.up =self.driver.find_element(By.XPATH,value='//*[@id="container"]/div[1]/div[4]/div/div/div/div[2]/div[2]/div/div[4]/div/div[3]/div/div/div[2]/div[1]/div[1]/div/div[2]/span').text
+    self.down = self.driver.find_element(By.XPATH,value='//*[@id="container"]/div[1]/div[4]/div/div/div/div[2]/div[2]/div/div[4]/div/div[3]/div/div/div[2]/div[1]/div[2]/div/div[2]/span').text
+    print(self.up,self.down)
+  def tweet_at_provider(self):
+    self.driver.get("https://x.com/")
+
+    time.sleep(2)
+
+    email = self.driver.find_element(By.XPATH, value = '//*[@id="react-root"]/div/div/div/main/div/div/div[1]/div[1]/div/div/div/div[1]/form/label/div')
+    email.send_keys(TWITTER__MAIL)
+    countinue_button = self.driver.find_element(By.XPATH, value = '//*[@id="react-root"]/div/div/div/main/div/div/div[1]/div[1]/div/div/div/div[1]/form/button')
+    countinue_button.click()
+
+    password = self.driver.find_element(by=By.XPATH,value = "")
+    password.send_keys(TWITTER_PASSWORD)
+    password.send_keys(Keys.Enter)
+    time.sleep(2)
+
+    #new inteface need to create a new click button to click on login
+
+
+    tweet_compose = self.driver.find_element(By.XPATH, value = "")
+    tweet= f"My current internt speed is Up :  {self.up} up and {self.down} down"
+    tweet_compose.send_keys(tweet)
+
+    time.sleep(3)
+
+    tweet_button = self.driver.find_element(By.XPATH, value='')
+    tweet_button.click()
+
+
+    time.sleep(2)
+    self.driver.quit()
+    
+bot = InternetSpeedTwitterBot()
+bot.get_intenet_speed()
+bot.tweet_at_provider()
